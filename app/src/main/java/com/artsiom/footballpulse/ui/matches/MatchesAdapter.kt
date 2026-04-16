@@ -4,9 +4,11 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.artsiom.footballpulse.R
 import com.artsiom.footballpulse.domain.model.Match
 import java.text.SimpleDateFormat
@@ -96,11 +98,24 @@ class MatchesAdapter(private val onMatchClick: (Match) -> Unit = {}) : RecyclerV
         private val matchDate: TextView = view.findViewById(R.id.matchDate)
         private val matchScore: TextView = view.findViewById(R.id.matchScore)
         private val matchStatus: TextView = view.findViewById(R.id.matchStatus)
+        private val homeTeamCrest: ImageView = view.findViewById(R.id.homeTeamCrest)
+        private val awayTeamCrest: ImageView = view.findViewById(R.id.awayTeamCrest)
 
         fun bind(match: Match) {
             itemView.setOnClickListener { onMatchClick(match) }
             homeTeam.text = match.homeTeam
             awayTeam.text = match.awayTeam
+
+            homeTeamCrest.load(match.homeTeamCrest) {
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder_crest)
+                error(R.drawable.ic_placeholder_crest)
+            }
+            awayTeamCrest.load(match.awayTeamCrest) {
+                crossfade(true)
+                placeholder(R.drawable.ic_placeholder_crest)
+                error(R.drawable.ic_placeholder_crest)
+            }
 
             val date = INPUT_FORMAT.parse(match.date)
             matchDate.text = if (date != null) TIME_FORMAT.format(date) else match.date

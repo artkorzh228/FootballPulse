@@ -8,7 +8,9 @@
       "Bash(powershell.exe:*)",
       "Bash(git rm *)",
       "Bash(git restore *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -16,6 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import coil.load
 import com.artsiom.footballpulse.R
 import com.artsiom.footballpulse.domain.model.MatchDetail
 import kotlinx.coroutines.launch
@@ -63,6 +65,8 @@ class MatchDetailsFragment : Fragment() {
 
         val homeTeamName = view.findViewById<TextView>(R.id.homeTeamName)
         val awayTeamName = view.findViewById<TextView>(R.id.awayTeamName)
+        val homeTeamCrest = view.findViewById<ImageView>(R.id.homeTeamCrest)
+        val awayTeamCrest = view.findViewById<ImageView>(R.id.awayTeamCrest)
         val scoreOrTime = view.findViewById<TextView>(R.id.scoreOrTime)
         val matchDate = view.findViewById<TextView>(R.id.matchDate)
         val matchStatus = view.findViewById<TextView>(R.id.matchStatus)
@@ -98,8 +102,8 @@ class MatchDetailsFragment : Fragment() {
                             contentLayout.visibility = View.VISIBLE
                             bindMatch(
                                 state.match,
-                                homeTeamName, awayTeamName, scoreOrTime,
-                                matchDate, matchStatus,
+                                homeTeamName, awayTeamName, homeTeamCrest, awayTeamCrest,
+                                scoreOrTime, matchDate, matchStatus,
                                 scoreContainer
                             )
                         }
@@ -113,6 +117,8 @@ class MatchDetailsFragment : Fragment() {
         match: MatchDetail,
         homeTeamName: TextView,
         awayTeamName: TextView,
+        homeTeamCrest: ImageView,
+        awayTeamCrest: ImageView,
         scoreOrTime: TextView,
         matchDate: TextView,
         matchStatus: TextView,
@@ -120,6 +126,17 @@ class MatchDetailsFragment : Fragment() {
     ) {
         homeTeamName.text = match.homeTeam
         awayTeamName.text = match.awayTeam
+
+        homeTeamCrest.load(match.homeTeamCrest) {
+            crossfade(true)
+            placeholder(R.drawable.ic_placeholder_crest)
+            error(R.drawable.ic_placeholder_crest)
+        }
+        awayTeamCrest.load(match.awayTeamCrest) {
+            crossfade(true)
+            placeholder(R.drawable.ic_placeholder_crest)
+            error(R.drawable.ic_placeholder_crest)
+        }
 
         val parsedDate = try { INPUT_FORMAT.parse(match.date) } catch (_: Exception) { null }
 

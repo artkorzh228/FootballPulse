@@ -12,6 +12,7 @@ data class PlayerDto(
 data class LineupTeamDto(
     @SerializedName("id")     val id: Int,
     @SerializedName("name")   val name: String,
+    @SerializedName("crest")  val crest: String?,
     @SerializedName("lineup") val lineup: List<PlayerDto>?,
     @SerializedName("bench")  val bench: List<PlayerDto>?
 )

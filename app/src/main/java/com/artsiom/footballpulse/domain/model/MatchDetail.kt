@@ -21,5 +21,7 @@ data class MatchDetail(
     val halfTimeHome: Int?,
     val halfTimeAway: Int?,
     val fullTimeHome: Int?,
-    val fullTimeAway: Int?
+    val fullTimeAway: Int?,
+    val homeTeamCrest: String?,
+    val awayTeamCrest: String?
 )

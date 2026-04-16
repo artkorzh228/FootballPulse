@@ -42,7 +42,9 @@ class FootballRepository {
                     date = dto.utcDate,
                     status = dto.status,
                     homeScore = dto.score.fullTime.home,
-                    awayScore = dto.score.fullTime.away
+                    awayScore = dto.score.fullTime.away,
+                    homeTeamCrest = dto.homeTeam.crest,
+                    awayTeamCrest = dto.awayTeam.crest
                 )
             }
 
@@ -62,7 +64,9 @@ class FootballRepository {
                 date = dto.utcDate,
                 status = dto.status,
                 homeScore = dto.score.fullTime.home,
-                awayScore = dto.score.fullTime.away
+                awayScore = dto.score.fullTime.away,
+                homeTeamCrest = dto.homeTeam.crest,
+                awayTeamCrest = dto.awayTeam.crest
             )
         }
     }
@@ -136,7 +140,9 @@ class FootballRepository {
             halfTimeHome = dto.score.halfTime?.home,
             halfTimeAway = dto.score.halfTime?.away,
             fullTimeHome = dto.score.fullTime.home,
-            fullTimeAway = dto.score.fullTime.away
+            fullTimeAway = dto.score.fullTime.away,
+            homeTeamCrest = dto.homeTeam.crest,
+            awayTeamCrest = dto.awayTeam.crest
         )
     }
 
