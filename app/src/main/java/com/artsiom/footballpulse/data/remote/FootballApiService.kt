@@ -6,7 +6,10 @@ import retrofit2.http.Query
 
 interface FootballApiService {
     @GET("v4/competitions/{code}/matches")
-    suspend fun getMatches(@Path("code") leagueCode: String) : Response<MatchesResponse>
+    suspend fun getMatches(
+        @Path("code") leagueCode: String,
+        @Query("season") season: Int
+    ): Response<MatchesResponse>
 
     @GET("v4/competitions/{code}/matches")
     suspend fun getMatchesByMatchday(

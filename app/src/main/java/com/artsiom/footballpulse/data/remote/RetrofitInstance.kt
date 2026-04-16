@@ -1,5 +1,6 @@
 package com.artsiom.footballpulse.data.remote
 
+import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,6 +14,8 @@ object RetrofitInstance {
 
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
+            Log.d("AUTH_DEBUG", "API key = '${BuildConfig.FOOTBALL_API_KEY}'")
+            Log.d("AUTH_DEBUG", "Request URL = '${chain.request().url}'")
             val request = chain.request().newBuilder()
                 .addHeader("X-Auth-Token", BuildConfig.FOOTBALL_API_KEY)
                 .build()

@@ -1,9 +1,7 @@
 package com.artsiom.footballpulse.data
 
-import android.util.Log
 import com.artsiom.footballpulse.data.remote.MatchDto
 import com.artsiom.footballpulse.data.remote.RetrofitInstance
-import com.artsiom.footballpulse.domain.model.Goal
 import com.artsiom.footballpulse.domain.model.Match
 import com.artsiom.footballpulse.domain.model.MatchDetail
 import com.artsiom.footballpulse.domain.model.Player
@@ -20,7 +18,7 @@ class FootballRepository {
 
     suspend fun getCurrentMatchdayResult(leagueCode: String): MatchdayResult {
         val season = computeCurrentSeason()
-        val response = RetrofitInstance.api.getMatches(leagueCode)
+        val response = RetrofitInstance.api.getMatches(leagueCode, season)
         if (!response.isSuccessful) {
             throw Exception("HTTP ${response.code()}: ${response.message()}")
         }
@@ -79,7 +77,7 @@ class FootballRepository {
         // football-data.org free tier returns form=null in standings.
         // Compute it from the finished matches endpoint instead.
         val formByTeamId: Map<Int, String> = try {
-            val matchesResponse = RetrofitInstance.api.getMatches(leagueCode)
+            val matchesResponse = RetrofitInstance.api.getMatches(leagueCode, computeCurrentSeason())
             if (matchesResponse.isSuccessful) {
                 computeFormByTeam(matchesResponse.body()?.matches ?: emptyList())
             } else emptyMap()
@@ -116,30 +114,12 @@ class FootballRepository {
         if (!response.isSuccessful) {
             throw Exception("HTTP ${response.code()}: ${response.message()}")
         }
-        // MATCH_DEBUG — log the raw Gson-deserialized body before any mapping
-        Log.d("MATCH_DEBUG", "raw response = ${response.body()}")
-        Log.d("MATCH_DEBUG", "goals array = ${response.body()?.goals}")
-        Log.d("MATCH_DEBUG", "goals size = ${response.body()?.goals?.size}")
-
         val dto = response.body() ?: throw Exception("Empty response")
 
         fun mapPlayers(list: List<com.artsiom.footballpulse.data.remote.PlayerDto>?) =
             (list ?: emptyList())
                 .map { Player(it.name, it.shirtNumber, it.position) }
                 .sortedBy { it.shirtNumber ?: Int.MAX_VALUE }
-
-        val homeId = dto.homeTeam.id
-        val goals = (dto.goals ?: emptyList()).mapNotNull { g ->
-            val minute = g.minute ?: return@mapNotNull null
-            // Own goals have scorer == null; label them as "OG" so they are not silently dropped
-            val scorerName = g.scorer?.name?.takeIf { it.isNotBlank() } ?: "OG"
-            Goal(
-                minute = minute,
-                injuryTime = g.injuryTime,
-                scorerName = scorerName,
-                isHome = g.team?.id == homeId
-            )
-        }.sortedBy { it.minute }
 
         return MatchDetail(
             id = dto.id,
@@ -153,7 +133,10 @@ class FootballRepository {
             awayLineup = mapPlayers(dto.awayTeam.lineup),
             homeBench = mapPlayers(dto.homeTeam.bench),
             awayBench = mapPlayers(dto.awayTeam.bench),
-            goals = goals
+            halfTimeHome = dto.score.halfTime?.home,
+            halfTimeAway = dto.score.halfTime?.away,
+            fullTimeHome = dto.score.fullTime.home,
+            fullTimeAway = dto.score.fullTime.away
         )
     }
 

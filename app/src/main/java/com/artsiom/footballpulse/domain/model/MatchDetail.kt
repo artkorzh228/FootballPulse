@@ -6,13 +6,6 @@ data class Player(
     val position: String?
 )
 
-data class Goal(
-    val minute: Int,
-    val injuryTime: Int?,
-    val scorerName: String,
-    val isHome: Boolean
-)
-
 data class MatchDetail(
     val id: Int,
     val homeTeam: String,
@@ -25,5 +18,8 @@ data class MatchDetail(
     val awayLineup: List<Player>,
     val homeBench: List<Player>,
     val awayBench: List<Player>,
-    val goals: List<Goal>
+    val halfTimeHome: Int?,
+    val halfTimeAway: Int?,
+    val fullTimeHome: Int?,
+    val fullTimeAway: Int?
 )

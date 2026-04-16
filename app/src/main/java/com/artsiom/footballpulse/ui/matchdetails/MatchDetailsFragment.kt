@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.artsiom.footballpulse.R
-import com.artsiom.footballpulse.domain.model.Goal
 import com.artsiom.footballpulse.domain.model.MatchDetail
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -67,12 +66,9 @@ class MatchDetailsFragment : Fragment() {
         val scoreOrTime = view.findViewById<TextView>(R.id.scoreOrTime)
         val matchDate = view.findViewById<TextView>(R.id.matchDate)
         val matchStatus = view.findViewById<TextView>(R.id.matchStatus)
-        val homeLineupHeader = view.findViewById<TextView>(R.id.homeLineupHeader)
-        val awayLineupHeader = view.findViewById<TextView>(R.id.awayLineupHeader)
-        val lineupContainer = view.findViewById<LinearLayout>(R.id.lineupContainer)
+        val scoreContainer = view.findViewById<LinearLayout>(R.id.scoreContainer)
         val benchCard = view.findViewById<View>(R.id.benchCard)
 
-        // Substitutes card is not used with the goals strategy
         benchCard.visibility = View.GONE
 
         btnBack.setOnClickListener {
@@ -104,8 +100,7 @@ class MatchDetailsFragment : Fragment() {
                                 state.match,
                                 homeTeamName, awayTeamName, scoreOrTime,
                                 matchDate, matchStatus,
-                                homeLineupHeader, awayLineupHeader,
-                                lineupContainer
+                                scoreContainer
                             )
                         }
                     }
@@ -121,9 +116,7 @@ class MatchDetailsFragment : Fragment() {
         scoreOrTime: TextView,
         matchDate: TextView,
         matchStatus: TextView,
-        homeGoalsHeader: TextView,
-        awayGoalsHeader: TextView,
-        goalsContainer: LinearLayout
+        scoreContainer: LinearLayout
     ) {
         homeTeamName.text = match.homeTeam
         awayTeamName.text = match.awayTeam
@@ -159,78 +152,96 @@ class MatchDetailsFragment : Fragment() {
         }
         matchStatus.background = bgDrawable
 
-        homeGoalsHeader.text = match.homeTeam
-        awayGoalsHeader.text = match.awayTeam
-        populateGoalsRows(goalsContainer, match.goals, match.status)
+        populateScoreRows(scoreContainer, match)
     }
 
-    private fun populateGoalsRows(container: LinearLayout, goals: List<Goal>, status: String) {
+    private fun populateScoreRows(container: LinearLayout, match: MatchDetail) {
         container.removeAllViews()
         val context = requireContext()
         val density = context.resources.displayMetrics.density
+        val hPad = (12 * density).toInt()
+        val vPad = (10 * density).toInt()
 
-        val statusUpper = status.uppercase()
+        val statusUpper = match.status.uppercase()
         if (statusUpper == "SCHEDULED" || statusUpper == "TIMED") {
-            addCenteredMessage(container, "Match not started yet")
+            val tv = TextView(context)
+            tv.text = "Match not started yet"
+            tv.gravity = Gravity.CENTER
+            tv.textSize = 13f
+            tv.setTextColor(0xFF757575.toInt())
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(0, vPad, 0, vPad)
+            tv.layoutParams = params
+            container.addView(tv)
             return
         }
 
-        if (goals.isEmpty()) {
-            addCenteredMessage(container, "No goals yet")
-            return
+        val halfHome = match.halfTimeHome
+        val halfAway = match.halfTimeAway
+        if (halfHome != null && halfAway != null) {
+            container.addView(buildScoreRow(context, density, hPad, vPad, "First Half", halfHome, halfAway))
+            val divider = View(context)
+            divider.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1.coerceAtLeast((0.5f * density).toInt())
+            )
+            divider.setBackgroundColor(0xFFE0E0E0.toInt())
+            container.addView(divider)
         }
 
-        val dividerColor = 0xFFE0E0E0.toInt()
-        goals.forEachIndexed { index, goal ->
-            val rowView = layoutInflater.inflate(R.layout.item_player_row, container, false)
-            val homePlayerTv = rowView.findViewById<TextView>(R.id.homePlayer)
-            val awayPlayerTv = rowView.findViewById<TextView>(R.id.awayPlayer)
-
-            val minuteLabel = if (goal.injuryTime != null && goal.injuryTime > 0) {
-                "${goal.minute}+${goal.injuryTime}'"
-            } else {
-                "${goal.minute}'"
-            }
-            val label = "$minuteLabel ${goal.scorerName}"
-
-            if (goal.isHome) {
-                homePlayerTv.text = label
-                awayPlayerTv.text = ""
-            } else {
-                homePlayerTv.text = ""
-                awayPlayerTv.text = label
-            }
-
-            if (index % 2 == 1) {
-                rowView.setBackgroundColor(ContextCompat.getColor(context, R.color.color_standings_row_odd))
-            }
-
-            container.addView(rowView)
-
-            if (index < goals.size - 1) {
-                val divider = View(context)
-                divider.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    (0.5f * density).toInt().coerceAtLeast(1)
-                )
-                divider.setBackgroundColor(dividerColor)
-                container.addView(divider)
-            }
-        }
+        val ftHome = match.fullTimeHome
+        val ftAway = match.fullTimeAway
+        val homeDisplay = ftHome?.toString() ?: "-"
+        val awayDisplay = ftAway?.toString() ?: "-"
+        container.addView(buildScoreRow(context, density, hPad, vPad, "Full Time", homeDisplay, awayDisplay))
     }
 
-    private fun addCenteredMessage(container: LinearLayout, message: String) {
-        val tv = TextView(requireContext())
-        tv.text = message
-        tv.gravity = Gravity.CENTER
-        tv.textSize = 13f
-        tv.setTextColor(0xFF757575.toInt())
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.setMargins(0, 24, 0, 24)
-        tv.layoutParams = params
-        container.addView(tv)
+    private fun buildScoreRow(
+        context: android.content.Context,
+        density: Float,
+        hPad: Int,
+        vPad: Int,
+        label: String,
+        homeScore: Any,
+        awayScore: Any
+    ): LinearLayout {
+        val row = LinearLayout(context)
+        row.orientation = LinearLayout.HORIZONTAL
+        row.gravity = Gravity.CENTER_VERTICAL
+        row.setPadding(hPad, vPad, hPad, vPad)
+
+        val labelTv = TextView(context)
+        labelTv.text = label
+        labelTv.textSize = 13f
+        labelTv.setTextColor(0xFF9E9E9E.toInt())
+        labelTv.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        row.addView(labelTv)
+
+        val homeTv = TextView(context)
+        homeTv.text = homeScore.toString()
+        homeTv.textSize = 14f
+        homeTv.setTypeface(null, android.graphics.Typeface.BOLD)
+        homeTv.gravity = Gravity.END
+        homeTv.minWidth = (28 * density).toInt()
+        row.addView(homeTv)
+
+        val dashTv = TextView(context)
+        dashTv.text = "  -  "
+        dashTv.textSize = 14f
+        dashTv.gravity = Gravity.CENTER
+        row.addView(dashTv)
+
+        val awayTv = TextView(context)
+        awayTv.text = awayScore.toString()
+        awayTv.textSize = 14f
+        awayTv.setTypeface(null, android.graphics.Typeface.BOLD)
+        awayTv.gravity = Gravity.START
+        awayTv.minWidth = (28 * density).toInt()
+        row.addView(awayTv)
+
+        return row
     }
 }
