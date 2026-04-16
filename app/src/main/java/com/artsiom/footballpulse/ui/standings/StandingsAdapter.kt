@@ -149,7 +149,7 @@ class StandingsAdapter(
         val rowBg = if (standing.position % 2 == 0) {
             ContextCompat.getColor(ctx, R.color.color_standings_row_odd)
         } else {
-            Color.WHITE
+            ContextCompat.getColor(ctx, R.color.color_standings_row_even)
         }
         holder.itemView.setBackgroundColor(rowBg)
 
@@ -165,7 +165,7 @@ class StandingsAdapter(
         }
         holder.leftBorder.setBackgroundColor(borderColor)
 
-        val defaultColor = ContextCompat.getColor(ctx, android.R.color.black)
+        val defaultColor = ContextCompat.getColor(ctx, R.color.color_text_primary)
 
         holder.tvPosition.apply { text = standing.position.toString(); setTextColor(defaultColor); setTypeface(null, Typeface.NORMAL) }
         holder.imgTeamCrest.visibility = View.VISIBLE

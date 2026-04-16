@@ -6,6 +6,14 @@
     <!-- App background -->
     <color name="color_background">#F5F5F5</color>
 
+    <!-- Generic text colors -->
+    <color name="color_text_primary">#212121</color>
+    <color name="color_text_secondary">#757575</color>
+    <color name="color_text_hint">#9E9E9E</color>
+
+    <!-- Dividers -->
+    <color name="color_divider">#E0E0E0</color>
+
     <!-- Status badge colors -->
     <color name="color_status_finished_bg">#E0E0E0</color>
     <color name="color_status_finished_text">#757575</color>
@@ -23,6 +31,7 @@
 
     <!-- Standings table -->
     <color name="color_standings_row_odd">#FAFAFA</color>
+    <color name="color_standings_row_even">#FFFFFF</color>
     <color name="color_standings_header_bg">#EEEEEE</color>
     <color name="color_standings_cl_border">#1565C0</color>
     <color name="color_standings_el_border">#FF9800</color>

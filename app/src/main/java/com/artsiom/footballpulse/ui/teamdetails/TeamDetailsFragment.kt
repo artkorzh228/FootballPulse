@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -149,7 +150,7 @@ class TeamDetailsFragment : Fragment() {
                 divider.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, 1
                 )
-                divider.setBackgroundColor(0xFFE0E0E0.toInt())
+                divider.setBackgroundColor(ContextCompat.getColor(ctx, R.color.color_divider))
                 container.addView(divider)
             }
             container.addView(buildInfoRow(ctx, hPad, vPad, label, value))
@@ -171,14 +172,14 @@ class TeamDetailsFragment : Fragment() {
         val labelTv = TextView(ctx)
         labelTv.text = label
         labelTv.textSize = 13f
-        labelTv.setTextColor(0xFF9E9E9E.toInt())
+        labelTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_hint))
         labelTv.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         row.addView(labelTv)
 
         val valueTv = TextView(ctx)
         valueTv.text = value
         valueTv.textSize = 14f
-        valueTv.setTextColor(0xFF212121.toInt())
+        valueTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_primary))
         valueTv.gravity = Gravity.END
         row.addView(valueTv)
 
@@ -205,7 +206,7 @@ class TeamDetailsFragment : Fragment() {
             headerTv.text = posKey
             headerTv.textSize = 12f
             headerTv.setTypeface(null, Typeface.BOLD)
-            headerTv.setTextColor(0xFF757575.toInt())
+            headerTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_secondary))
             headerTv.setPadding(hPad, (12 * density).toInt(), hPad, (4 * density).toInt())
             container.addView(headerTv)
 
@@ -213,7 +214,7 @@ class TeamDetailsFragment : Fragment() {
             divider.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 1
             )
-            divider.setBackgroundColor(0xFFEEEEEE.toInt())
+            divider.setBackgroundColor(ContextCompat.getColor(ctx, R.color.color_divider))
             container.addView(divider)
 
             players.sortedBy { it.shirtNumber ?: Int.MAX_VALUE }.forEach { player ->
@@ -249,7 +250,7 @@ class TeamDetailsFragment : Fragment() {
         val numberTv = TextView(ctx)
         numberTv.text = player.shirtNumber?.toString() ?: "–"
         numberTv.textSize = 13f
-        numberTv.setTextColor(0xFF9E9E9E.toInt())
+        numberTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_hint))
         numberTv.gravity = Gravity.CENTER
         numberTv.minWidth = (28 * density).toInt()
         numberTv.layoutParams = LinearLayout.LayoutParams(
@@ -260,14 +261,14 @@ class TeamDetailsFragment : Fragment() {
         val nameTv = TextView(ctx)
         nameTv.text = player.name
         nameTv.textSize = 14f
-        nameTv.setTextColor(0xFF212121.toInt())
+        nameTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_primary))
         nameTv.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         row.addView(nameTv)
 
         val nationalityTv = TextView(ctx)
         nationalityTv.text = player.nationality ?: ""
         nationalityTv.textSize = 12f
-        nationalityTv.setTextColor(0xFF9E9E9E.toInt())
+        nationalityTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_hint))
         nationalityTv.gravity = Gravity.END
         row.addView(nationalityTv)
 

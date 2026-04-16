@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App background -->
+    <color name="color_background">#121212</color>
+
+    <!-- Generic text colors -->
+    <color name="color_text_primary">#FFFFFF</color>
+    <color name="color_text_secondary">#B0B0B0</color>
+    <color name="color_text_hint">#B0B0B0</color>
+
+    <!-- Dividers -->
+    <color name="color_divider">#2C2C2C</color>
+
+    <!-- League tab colors -->
+    <color name="color_tab_unselected_bg">#2C2C2C</color>
+    <color name="color_tab_unselected_text">#B0B0B0</color>
+
+    <!-- Date header text -->
+    <color name="color_date_header_text">#B0B0B0</color>
+
+    <!-- Standings table -->
+    <color name="color_standings_row_odd">#1A1A1A</color>
+    <color name="color_standings_row_even">#1E1E1E</color>
+    <color name="color_standings_header_bg">#2C2C2C</color>
+</resources>

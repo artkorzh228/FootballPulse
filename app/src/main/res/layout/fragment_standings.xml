@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_background">
+    android:background="?android:attr/colorBackground">
 
     <!-- League tabs (same horizontal RecyclerView as Matches screen) -->
     <androidx.recyclerview.widget.RecyclerView

@@ -185,7 +185,7 @@ class MatchDetailsFragment : Fragment() {
             tv.text = "Match not started yet"
             tv.gravity = Gravity.CENTER
             tv.textSize = 13f
-            tv.setTextColor(0xFF757575.toInt())
+            tv.setTextColor(ContextCompat.getColor(context, R.color.color_text_secondary))
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -205,7 +205,7 @@ class MatchDetailsFragment : Fragment() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 1.coerceAtLeast((0.5f * density).toInt())
             )
-            divider.setBackgroundColor(0xFFE0E0E0.toInt())
+            divider.setBackgroundColor(ContextCompat.getColor(context, R.color.color_divider))
             container.addView(divider)
         }
 
@@ -233,7 +233,7 @@ class MatchDetailsFragment : Fragment() {
         val labelTv = TextView(context)
         labelTv.text = label
         labelTv.textSize = 13f
-        labelTv.setTextColor(0xFF9E9E9E.toInt())
+        labelTv.setTextColor(ContextCompat.getColor(context, R.color.color_text_hint))
         labelTv.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         row.addView(labelTv)
 
