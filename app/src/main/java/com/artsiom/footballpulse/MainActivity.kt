@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_DARK_MODE = "dark_mode"
     }
 
+    private val matchesFragment by lazy { MatchesFragment() }
+    private val standingsFragment by lazy { StandingsFragment() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         val isDark = prefs.getBoolean(KEY_DARK_MODE, false)
@@ -46,23 +49,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (savedInstanceState == null) {
-            replaceFragment(MatchesFragment())
+            showFragment(matchesFragment)
         }
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_matches -> { replaceFragment(MatchesFragment()); true }
-                R.id.nav_standings -> { replaceFragment(StandingsFragment()); true }
+                R.id.nav_matches -> { showFragment(matchesFragment); true }
+                R.id.nav_standings -> { showFragment(standingsFragment); true }
                 else -> false
             }
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
+    private fun showFragment(target: Fragment) {
+        val tx = supportFragmentManager.beginTransaction()
+        supportFragmentManager.fragments.forEach { if (it !== target) tx.hide(it) }
+        if (!target.isAdded) tx.add(R.id.fragmentContainer, target) else tx.show(target)
+        tx.commit()
     }
 
     fun navigateToMatchDetails(matchId: Int) {

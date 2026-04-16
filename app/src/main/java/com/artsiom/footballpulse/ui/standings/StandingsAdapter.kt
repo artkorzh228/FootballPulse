@@ -3,7 +3,6 @@ package com.artsiom.footballpulse.ui.standings
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +36,10 @@ class StandingsAdapter(
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_ROW = 1
+        private const val CHAMPIONS_LEAGUE_SPOTS = 4
+        private const val EUROPA_LEAGUE_POSITION = 5
+        private const val RELEGATION_ZONE_SIZE = 3
+        private const val FORM_WINDOW = 5
     }
 
     override fun getItemViewType(position: Int) = if (position == 0) TYPE_HEADER else TYPE_ROW
@@ -155,11 +158,11 @@ class StandingsAdapter(
 
         // Left border by competition zone
         val borderColor = when {
-            standing.position <= 4 ->
+            standing.position <= CHAMPIONS_LEAGUE_SPOTS ->
                 ContextCompat.getColor(ctx, R.color.color_standings_cl_border)
-            standing.position == 5 ->
+            standing.position == EUROPA_LEAGUE_POSITION ->
                 ContextCompat.getColor(ctx, R.color.color_standings_el_border)
-            standing.position > standings.size - 3 ->
+            standing.position > standings.size - RELEGATION_ZONE_SIZE ->
                 ContextCompat.getColor(ctx, R.color.color_standings_rel_border)
             else -> Color.TRANSPARENT
         }
@@ -206,21 +209,18 @@ class StandingsAdapter(
         val ctx = holder.itemView.context
         holder.formContainer.removeAllViews()
 
-        Log.d("StandingsAdapter", "form for ${standing.teamName}: ${standing.form}")
-        Log.d("FORM_DEBUG", "form string = '${standing.form}'")
-
         // football-data.org returns form as a run of characters e.g. "WDLWW" (no commas).
         // Defensively strip any commas so both "WDLWW" and "W,D,L,W,W" work.
         val results = standing.form
             ?.replace(",", "")
             ?.map { it.toString() }
             ?.filter { it in setOf("W", "D", "L") }
-            ?.takeLast(5)
+            ?.takeLast(FORM_WINDOW)
             ?: emptyList()
 
-        // Pad to exactly 5 slots so the column width is always consistent
+        // Pad to exactly FORM_WINDOW slots so the column width is always consistent
         val paddedResults = buildList {
-            repeat(5 - results.size) { add("") }
+            repeat(FORM_WINDOW - results.size) { add("") }
             addAll(results)
         }
 

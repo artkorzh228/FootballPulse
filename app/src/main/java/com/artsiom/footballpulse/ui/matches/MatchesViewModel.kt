@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.artsiom.footballpulse.data.FootballRepository
-import com.artsiom.footballpulse.domain.model.League
+import com.artsiom.footballpulse.domain.model.Leagues
 
 class MatchesViewModel : ViewModel() {
 
@@ -15,13 +15,7 @@ class MatchesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<MatchesUiState>(MatchesUiState.Loading)
     val uiState: StateFlow<MatchesUiState> = _uiState
 
-    val leagues = listOf(
-        League("PL",  "Premier League", "PL"),
-        League("PD",  "La Liga",        "La Liga"),
-        League("BL1", "Bundesliga",     "BL"),
-        League("FL1", "Ligue 1",        "L1"),
-        League("SA",  "Serie A",        "SA"),
-    )
+    val leagues = Leagues.ALL
 
     val leagueMaxMatchdays = mapOf(
         "PL"  to 38,

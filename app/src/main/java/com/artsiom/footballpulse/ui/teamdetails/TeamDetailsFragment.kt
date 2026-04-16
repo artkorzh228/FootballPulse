@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import java.time.LocalDate
 import java.time.Period
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -194,8 +193,6 @@ class TeamDetailsFragment : Fragment() {
         val density = ctx.resources.displayMetrics.density
         val hPad = (12 * density).toInt()
         val vPad = (8 * density).toInt()
-
-        squad.forEach { player -> Log.d("SQUAD_DEBUG", "player=${player.name} position=${player.position}") }
 
         val grouped = squad.groupBy { normalizePosition(it.position) }.filterKeys { it != null }
 

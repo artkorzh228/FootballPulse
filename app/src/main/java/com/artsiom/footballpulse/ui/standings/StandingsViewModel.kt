@@ -1,10 +1,9 @@
 package com.artsiom.footballpulse.ui.standings
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artsiom.footballpulse.data.FootballRepository
-import com.artsiom.footballpulse.domain.model.League
+import com.artsiom.footballpulse.domain.model.Leagues
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,13 +12,7 @@ class StandingsViewModel : ViewModel() {
 
     private val repository = FootballRepository()
 
-    val leagues = listOf(
-        League("PL",  "Premier League", "PL"),
-        League("PD",  "La Liga",        "La Liga"),
-        League("BL1", "Bundesliga",     "BL"),
-        League("FL1", "Ligue 1",        "L1"),
-        League("SA",  "Serie A",        "SA"),
-    )
+    val leagues = Leagues.ALL
 
     private val _currentLeagueCode = MutableStateFlow("PL")
     val currentLeagueCode: StateFlow<String> = _currentLeagueCode
@@ -55,9 +48,6 @@ class StandingsViewModel : ViewModel() {
             _uiState.value = StandingsUiState.Loading
             try {
                 val standings = repository.getStandings(_currentLeagueCode.value)
-                standings.firstOrNull()?.let { team ->
-                    Log.d("STANDINGS", "form field = ${team.form}")
-                }
                 _uiState.value = StandingsUiState.Success(standings)
             } catch (e: Exception) {
                 _uiState.value = StandingsUiState.Error(e.message ?: "Unknown error")
