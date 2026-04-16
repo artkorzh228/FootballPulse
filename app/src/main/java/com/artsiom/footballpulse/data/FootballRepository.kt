@@ -164,7 +164,7 @@ class FootballRepository {
             venue = dto.venue,
             clubColors = dto.clubColors,
             squad = (dto.squad ?: emptyList()).map { p ->
-                SquadPlayer(p.id, p.name, p.position, p.nationality, p.shirtNumber)
+                SquadPlayer(p.id, p.name, p.position, p.nationality, p.shirtNumber, p.dateOfBirth)
             }
         )
     }

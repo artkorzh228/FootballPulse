@@ -1,6 +1,8 @@
 package com.artsiom.footballpulse.ui.teamdetails
 
 import android.graphics.Typeface
+import java.time.LocalDate
+import java.time.Period
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -266,12 +268,84 @@ class TeamDetailsFragment : Fragment() {
         row.addView(nameTv)
 
         val nationalityTv = TextView(ctx)
-        nationalityTv.text = player.nationality ?: ""
+        val flag = countryFlag(player.nationality)
+        nationalityTv.text = if (player.nationality != null) "$flag ${player.nationality}" else ""
         nationalityTv.textSize = 12f
         nationalityTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_hint))
         nationalityTv.gravity = Gravity.END
         row.addView(nationalityTv)
 
+        val age = calculateAge(player.dateOfBirth)
+        if (age != null) {
+            val ageTv = TextView(ctx)
+            ageTv.text = age.toString()
+            ageTv.textSize = 13f
+            ageTv.setTextColor(ContextCompat.getColor(ctx, R.color.color_text_hint))
+            ageTv.gravity = Gravity.END
+            ageTv.setPadding((8 * density).toInt(), 0, 0, 0)
+            row.addView(ageTv)
+        }
+
         return row
+    }
+
+    private fun calculateAge(dateOfBirth: String?): Int? {
+        if (dateOfBirth == null) return null
+        val birthDate = LocalDate.parse(dateOfBirth)
+        return Period.between(birthDate, LocalDate.now()).years
+    }
+
+    private fun countryFlag(nationality: String?): String = when (nationality) {
+        "Spain" -> "🇪🇸"
+        "Poland" -> "🇵🇱"
+        "France" -> "🇫🇷"
+        "Germany" -> "🇩🇪"
+        "Brazil" -> "🇧🇷"
+        "Argentina" -> "🇦🇷"
+        "Portugal" -> "🇵🇹"
+        "England" -> "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+        "Netherlands" -> "🇳🇱"
+        "Belgium" -> "🇧🇪"
+        "Italy" -> "🇮🇹"
+        "Croatia" -> "🇭🇷"
+        "Uruguay" -> "🇺🇾"
+        "Denmark" -> "🇩🇰"
+        "Sweden" -> "🇸🇪"
+        "Norway" -> "🇳🇴"
+        "Switzerland" -> "🇨🇭"
+        "Austria" -> "🇦🇹"
+        "Czech Republic" -> "🇨🇿"
+        "Slovakia" -> "🇸🇰"
+        "Serbia" -> "🇷🇸"
+        "Ukraine" -> "🇺🇦"
+        "Turkey" -> "🇹🇷"
+        "Morocco" -> "🇲🇦"
+        "Senegal" -> "🇸🇳"
+        "Ivory Coast" -> "🇨🇮"
+        "Ghana" -> "🇬🇭"
+        "Nigeria" -> "🇳🇬"
+        "Cameroon" -> "🇨🇲"
+        "USA" -> "🇺🇸"
+        "Canada" -> "🇨🇦"
+        "Mexico" -> "🇲🇽"
+        "Colombia" -> "🇨🇴"
+        "Chile" -> "🇨🇱"
+        "Ecuador" -> "🇪🇨"
+        "Japan" -> "🇯🇵"
+        "South Korea" -> "🇰🇷"
+        "Australia" -> "🇦🇺"
+        "Scotland" -> "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+        "Wales" -> "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+        "Ireland" -> "🇮🇪"
+        "Albania" -> "🇦🇱"
+        "Slovenia" -> "🇸🇮"
+        "Hungary" -> "🇭🇺"
+        "Romania" -> "🇷🇴"
+        "Bulgaria" -> "🇧🇬"
+        "Greece" -> "🇬🇷"
+        "Finland" -> "🇫🇮"
+        "Russia" -> "🇷🇺"
+        "Belarus" -> "🇧🇾"
+        else -> "🏳️"
     }
 }

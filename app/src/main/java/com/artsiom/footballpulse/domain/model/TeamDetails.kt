@@ -5,7 +5,8 @@ data class SquadPlayer(
     val name: String,
     val position: String?,
     val nationality: String?,
-    val shirtNumber: Int?
+    val shirtNumber: Int?,
+    val dateOfBirth: String?
 )
 
 data class TeamDetails(

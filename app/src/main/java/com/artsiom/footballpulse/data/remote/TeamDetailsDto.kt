@@ -7,7 +7,8 @@ data class SquadPlayerDto(
     @SerializedName("name")        val name: String,
     @SerializedName("position")    val position: String?,
     @SerializedName("nationality") val nationality: String?,
-    @SerializedName("shirtNumber") val shirtNumber: Int?
+    @SerializedName("shirtNumber") val shirtNumber: Int?,
+    @SerializedName("dateOfBirth") val dateOfBirth: String?
 )
 
 data class TeamDetailsDto(
