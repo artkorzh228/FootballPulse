@@ -17,7 +17,9 @@ import coil.load
 import com.artsiom.footballpulse.R
 import com.artsiom.footballpulse.domain.model.Standing
 
-class StandingsAdapter : RecyclerView.Adapter<StandingsAdapter.StandingViewHolder>() {
+class StandingsAdapter(
+    private val onTeamClick: (teamId: Int) -> Unit = {}
+) : RecyclerView.Adapter<StandingsAdapter.StandingViewHolder>() {
 
     private var standings: List<Standing> = emptyList()
 
@@ -141,6 +143,7 @@ class StandingsAdapter : RecyclerView.Adapter<StandingsAdapter.StandingViewHolde
     private fun bindRow(holder: StandingViewHolder, standing: Standing) {
         val ctx = holder.itemView.context
         applyModeVisibility(holder)
+        holder.itemView.setOnClickListener { onTeamClick(standing.teamId) }
 
         // Alternating row background
         val rowBg = if (standing.position % 2 == 0) {

@@ -23,4 +23,7 @@ interface FootballApiService {
 
     @GET("v4/matches/{id}")
     suspend fun getMatchDetail(@Path("id") matchId: Int): Response<MatchDetailDto>
+
+    @GET("v4/teams/{id}")
+    suspend fun getTeam(@Path("id") id: Int): Response<TeamDetailsDto>
 }

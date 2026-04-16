@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.artsiom.footballpulse.ui.matchdetails.MatchDetailsFragment
+import com.artsiom.footballpulse.ui.teamdetails.TeamDetailsFragment
 import com.artsiom.footballpulse.ui.matches.MatchesFragment
 import com.artsiom.footballpulse.ui.standings.StandingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,6 +40,13 @@ class MainActivity : AppCompatActivity() {
     fun navigateToMatchDetails(matchId: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, MatchDetailsFragment.newInstance(matchId))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun navigateToTeamDetails(teamId: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, TeamDetailsFragment.newInstance(teamId))
             .addToBackStack(null)
             .commit()
     }

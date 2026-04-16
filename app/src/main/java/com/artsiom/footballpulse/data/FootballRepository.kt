@@ -5,7 +5,9 @@ import com.artsiom.footballpulse.data.remote.RetrofitInstance
 import com.artsiom.footballpulse.domain.model.Match
 import com.artsiom.footballpulse.domain.model.MatchDetail
 import com.artsiom.footballpulse.domain.model.Player
+import com.artsiom.footballpulse.domain.model.SquadPlayer
 import com.artsiom.footballpulse.domain.model.Standing
+import com.artsiom.footballpulse.domain.model.TeamDetails
 import java.util.Calendar
 
 data class MatchdayResult(
@@ -92,6 +94,7 @@ class FootballRepository {
         return table.map { dto ->
             Standing(
                 position = dto.position,
+                teamId = dto.team.id,
                 teamName = dto.team.name,
                 crest = dto.team.crest,
                 playedGames = dto.playedGames,
@@ -144,6 +147,25 @@ class FootballRepository {
             fullTimeAway = dto.score.fullTime.away,
             homeTeamCrest = dto.homeTeam.crest,
             awayTeamCrest = dto.awayTeam.crest
+        )
+    }
+
+    suspend fun getTeamById(id: Int): TeamDetails {
+        val response = RetrofitInstance.api.getTeam(id)
+        if (!response.isSuccessful) throw Exception("HTTP ${response.code()}: ${response.message()}")
+        val dto = response.body() ?: throw Exception("Empty response")
+        return TeamDetails(
+            id = dto.id,
+            name = dto.name,
+            shortName = dto.shortName,
+            tla = dto.tla,
+            crest = dto.crest,
+            founded = dto.founded,
+            venue = dto.venue,
+            clubColors = dto.clubColors,
+            squad = (dto.squad ?: emptyList()).map { p ->
+                SquadPlayer(p.id, p.name, p.position, p.nationality, p.shirtNumber)
+            }
         )
     }
 

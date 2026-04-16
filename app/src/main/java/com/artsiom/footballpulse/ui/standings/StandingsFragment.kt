@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.artsiom.footballpulse.MainActivity
 import com.artsiom.footballpulse.R
 import com.artsiom.footballpulse.ui.matches.LeaguesAdapter
 import kotlinx.coroutines.launch
@@ -52,7 +53,9 @@ class StandingsFragment : Fragment() {
         if (leagueIdx >= 0) leaguesAdapter.setSelectedPosition(leagueIdx)
 
         // Standings table
-        val standingsAdapter = StandingsAdapter()
+        val standingsAdapter = StandingsAdapter { teamId ->
+            (requireActivity() as MainActivity).navigateToTeamDetails(teamId)
+        }
         standingsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         standingsRecyclerView.adapter = standingsAdapter
 

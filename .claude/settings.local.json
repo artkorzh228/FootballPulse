@@ -10,7 +10,14 @@
       "Bash(git restore *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(./gradlew compileDebugKotlin)",
+      "Bash(bash gradlew *)",
+      "Bash(/usr/libexec/java_home)",
+      "Bash(export JAVA_HOME=$\\(/usr/libexec/java_home || echo \"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"\\))",
+      "Bash(java -version)",
+      "Bash(/usr/bin/java *)"
     ]
   }
 }

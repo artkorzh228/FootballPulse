@@ -2,6 +2,7 @@ package com.artsiom.footballpulse.domain.model
 
 data class Standing(
     val position: Int,
+    val teamId: Int,
     val teamName: String,
     val crest: String?,
     val playedGames: Int,
