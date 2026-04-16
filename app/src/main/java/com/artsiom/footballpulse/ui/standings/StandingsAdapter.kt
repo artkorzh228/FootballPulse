@@ -8,10 +8,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.artsiom.footballpulse.R
 import com.artsiom.footballpulse.domain.model.Standing
 
@@ -43,6 +45,7 @@ class StandingsAdapter : RecyclerView.Adapter<StandingsAdapter.StandingViewHolde
     inner class StandingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val leftBorder: View = view.findViewById(R.id.leftBorder)
         val tvPosition: TextView = view.findViewById(R.id.tvPosition)
+        val imgTeamCrest: ImageView = view.findViewById(R.id.imgTeamCrest)
         val tvTeamName: TextView = view.findViewById(R.id.tvTeamName)
         val tvMp: TextView = view.findViewById(R.id.tvMp)
         val tvWins: TextView = view.findViewById(R.id.tvWins)
@@ -108,6 +111,7 @@ class StandingsAdapter : RecyclerView.Adapter<StandingsAdapter.StandingViewHolde
 
         val headerColor = ContextCompat.getColor(ctx, R.color.color_date_header_text)
 
+        holder.imgTeamCrest.visibility = View.INVISIBLE
         holder.tvPosition.apply { text = "#"; setTextColor(headerColor); setTypeface(null, Typeface.NORMAL) }
         holder.tvTeamName.apply { text = "Team"; setTextColor(headerColor); setTypeface(null, Typeface.NORMAL) }
         holder.tvMp.apply { text = "MP"; setTextColor(headerColor) }
@@ -161,6 +165,12 @@ class StandingsAdapter : RecyclerView.Adapter<StandingsAdapter.StandingViewHolde
         val defaultColor = ContextCompat.getColor(ctx, android.R.color.black)
 
         holder.tvPosition.apply { text = standing.position.toString(); setTextColor(defaultColor); setTypeface(null, Typeface.NORMAL) }
+        holder.imgTeamCrest.visibility = View.VISIBLE
+        holder.imgTeamCrest.load(standing.crest) {
+            crossfade(true)
+            placeholder(R.drawable.ic_placeholder_crest)
+            error(R.drawable.ic_placeholder_crest)
+        }
         holder.tvTeamName.apply { text = standing.teamName; setTextColor(defaultColor); setTypeface(null, Typeface.NORMAL) }
         holder.tvPoints.apply { text = standing.points.toString(); setTextColor(defaultColor); setTypeface(null, Typeface.BOLD) }
 

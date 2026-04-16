@@ -93,6 +93,7 @@ class FootballRepository {
             Standing(
                 position = dto.position,
                 teamName = dto.team.name,
+                crest = dto.team.crest,
                 playedGames = dto.playedGames,
                 won = dto.won,
                 draw = dto.draw,
