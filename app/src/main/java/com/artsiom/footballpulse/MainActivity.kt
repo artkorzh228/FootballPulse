@@ -1,80 +1,45 @@
 package com.artsiom.footballpulse
 
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.artsiom.footballpulse.ui.matches.LeaguesAdapter
-import com.artsiom.footballpulse.ui.matches.MatchesAdapter
-import com.artsiom.footballpulse.ui.matches.MatchesUiState
-import com.artsiom.footballpulse.ui.matches.MatchesViewModel
-import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
+import com.artsiom.footballpulse.ui.matchdetails.MatchDetailsFragment
+import com.artsiom.footballpulse.ui.matches.MatchesFragment
+import com.artsiom.footballpulse.ui.standings.StandingsFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val errorText = findViewById<TextView>(R.id.errorText)
-        val leaguesRecyclerView = findViewById<RecyclerView>(R.id.leaguesRecyclerView)
-
-        val matchesAdapter = MatchesAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = matchesAdapter
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        )
-
-        val viewModel = ViewModelProvider(this)[MatchesViewModel::class.java]
-
-        val leaguesAdapter = LeaguesAdapter { league ->
-            android.util.Log.d("FootballPulse", "Lambda called: ${league.code}")
-            viewModel.loadMatches(league.code)
+        if (savedInstanceState == null) {
+            replaceFragment(MatchesFragment())
         }
-        leaguesRecyclerView.layoutManager = LinearLayoutManager(
-            this, LinearLayoutManager.HORIZONTAL, false
-        )
-        leaguesRecyclerView.adapter = leaguesAdapter
-        leaguesAdapter.submitList(viewModel.leagues)
 
-        viewModel.loadMatches()
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    when (state) {
-                        is MatchesUiState.Loading -> {
-                            progressBar.visibility = View.VISIBLE
-                            recyclerView.visibility = View.GONE
-                            errorText.visibility = View.GONE
-                        }
-                        is MatchesUiState.Success -> {
-                            progressBar.visibility = View.GONE
-                            recyclerView.visibility = View.VISIBLE
-                            errorText.visibility = View.GONE
-                            matchesAdapter.submitList(state.matches)
-                        }
-                        is MatchesUiState.Error -> {
-                            progressBar.visibility = View.GONE
-                            recyclerView.visibility = View.GONE
-                            errorText.visibility = View.VISIBLE
-                            errorText.text = state.message
-                        }
-                    }
-                }
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_matches -> { replaceFragment(MatchesFragment()); true }
+                R.id.nav_standings -> { replaceFragment(StandingsFragment()); true }
+                else -> false
             }
         }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
+    }
+
+    fun navigateToMatchDetails(matchId: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, MatchDetailsFragment.newInstance(matchId))
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -4,11 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34fb66ca-f75a-4f76-9a3a-2db4f02baecd" name="Changes" comment="" />
+    <list default="true" id="34fb66ca-f75a-4f76-9a3a-2db4f02baecd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/data/remote/StandingsDto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/domain/model/Standing.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/ui/standings/StandingsUiState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/data/FootballRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/data/FootballRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/data/remote/FootballApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/artsiom/footballpulse/data/remote/FootballApiService.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "artkorzh228"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/artkorzh228/FootballPulse.git",
+    "accountId": "961773eb-629a-4889-b265-fbc214438e0c"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -17,14 +43,17 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -42,7 +71,11 @@
       <updated>1773947254203</updated>
       <workItem from="1773947257860" duration="12000" />
       <workItem from="1774389054589" duration="11000" />
+      <workItem from="1774480540038" duration="33000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

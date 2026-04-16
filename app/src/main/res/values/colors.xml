@@ -2,4 +2,34 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- App background -->
+    <color name="color_background">#F5F5F5</color>
+
+    <!-- Status badge colors -->
+    <color name="color_status_finished_bg">#E0E0E0</color>
+    <color name="color_status_finished_text">#757575</color>
+    <color name="color_status_live_bg">#4CAF50</color>
+    <color name="color_status_scheduled_bg">#2196F3</color>
+
+    <!-- League tab colors -->
+    <color name="color_tab_selected_bg">#1565C0</color>
+    <color name="color_tab_selected_text">#FFFFFF</color>
+    <color name="color_tab_unselected_bg">#EEEEEE</color>
+    <color name="color_tab_unselected_text">#757575</color>
+
+    <!-- Date header text -->
+    <color name="color_date_header_text">#9E9E9E</color>
+
+    <!-- Standings table -->
+    <color name="color_standings_row_odd">#FAFAFA</color>
+    <color name="color_standings_header_bg">#EEEEEE</color>
+    <color name="color_standings_cl_border">#1565C0</color>
+    <color name="color_standings_el_border">#FF9800</color>
+    <color name="color_standings_rel_border">#F44336</color>
+
+    <!-- Form badges -->
+    <color name="color_form_win_bg">#4CAF50</color>
+    <color name="color_form_draw_bg">#9E9E9E</color>
+    <color name="color_form_loss_bg">#F44336</color>
 </resources>

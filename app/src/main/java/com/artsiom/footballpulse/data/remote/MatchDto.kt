@@ -2,6 +2,7 @@ package com.artsiom.footballpulse.data.remote
 
 data class MatchDto(
     val id: Int,
+    val matchday: Int?,
     val utcDate: String,
     val status: String,
     val homeTeam: TeamDto,

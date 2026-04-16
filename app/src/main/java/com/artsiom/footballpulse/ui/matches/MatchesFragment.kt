@@ -1,0 +1,104 @@
+package com.artsiom.footballpulse.ui.matches
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.artsiom.footballpulse.MainActivity
+import com.artsiom.footballpulse.R
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
+
+class MatchesFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_matches, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val errorText = view.findViewById<TextView>(R.id.errorText)
+        val leaguesRecyclerView = view.findViewById<RecyclerView>(R.id.leaguesRecyclerView)
+        val matchdayLabel = view.findViewById<TextView>(R.id.matchdayLabel)
+        val btnPrev = view.findViewById<TextView>(R.id.btnPrevMatchday)
+        val btnNext = view.findViewById<TextView>(R.id.btnNextMatchday)
+
+        // Scope ViewModel to Activity so data survives tab switches
+        val viewModel = ViewModelProvider(requireActivity())[MatchesViewModel::class.java]
+
+        val matchesAdapter = MatchesAdapter { match ->
+            (requireActivity() as MainActivity).navigateToMatchDetails(match.id)
+        }
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = matchesAdapter
+
+        val leaguesAdapter = LeaguesAdapter { league -> viewModel.loadLeague(league.code) }
+        leaguesRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        leaguesRecyclerView.adapter = leaguesAdapter
+        leaguesAdapter.submitList(viewModel.leagues)
+        val matchesLeagueIdx = viewModel.leagues.indexOfFirst { it.code == viewModel.currentLeagueCode.value }
+        if (matchesLeagueIdx >= 0) leaguesAdapter.setSelectedPosition(matchesLeagueIdx)
+
+        btnPrev.setOnClickListener { viewModel.goToPreviousMatchday() }
+        btnNext.setOnClickListener { viewModel.goToNextMatchday() }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    combine(
+                        viewModel.currentMatchday,
+                        viewModel.currentLeagueCode,
+                        viewModel.uiState
+                    ) { matchday, league, state -> Triple(matchday, league, state) }
+                        .collect { (matchday, league, state) ->
+                            matchdayLabel.text = "Matchday $matchday"
+                            val max = viewModel.leagueMaxMatchdays[league] ?: 38
+                            val isLoading = state is MatchesUiState.Loading
+                            btnPrev.isEnabled = !isLoading && matchday > 1
+                            btnNext.isEnabled = !isLoading && matchday < max
+                            btnPrev.alpha = if (btnPrev.isEnabled) 1.0f else 0.3f
+                            btnNext.alpha = if (btnNext.isEnabled) 1.0f else 0.3f
+                        }
+                }
+
+                launch {
+                    viewModel.uiState.collect { state ->
+                        when (state) {
+                            is MatchesUiState.Loading -> {
+                                progressBar.visibility = View.VISIBLE
+                                recyclerView.visibility = View.GONE
+                                errorText.visibility = View.GONE
+                            }
+                            is MatchesUiState.Success -> {
+                                progressBar.visibility = View.GONE
+                                recyclerView.visibility = View.VISIBLE
+                                errorText.visibility = View.GONE
+                                matchesAdapter.submitList(state.matches)
+                            }
+                            is MatchesUiState.Error -> {
+                                progressBar.visibility = View.GONE
+                                recyclerView.visibility = View.GONE
+                                errorText.visibility = View.VISIBLE
+                                errorText.text = state.message
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
