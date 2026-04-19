@@ -8,3 +8,7 @@ local.properties
 .externalNativeBuild/
 .cxx/
 *.keystore
+.claude/
+.idea/
+.claude/
+.idea/
