@@ -12,7 +12,7 @@ An Android app for browsing football matches, standings, and team info across th
 |---|---|---|
 | ![](screenshots/standings_short.png) | ![](screenshots/standings_form.png) | ![](screenshots/match_details.png) |
 
-| Team Details |
+| Team Details - Barcelona(Dark) | Team Details - Real Madrid(Dark) | Team Details - Bayern Munich(Light) | 
 |---|---|---|
 | ![](screenshots/team_details.png) | ![](screenshots/team_details(1).png) | ![](screenshots/team_details(2).png) |
 
