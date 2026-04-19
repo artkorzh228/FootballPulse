@@ -1,4 +1,4 @@
-# FootballPulse ⚽
+%# FootballPulse ⚽
 
 An Android app for browsing football matches, standings, and team info across the **Top 5 European leagues** — built as a portfolio project.
 
@@ -14,7 +14,7 @@ An Android app for browsing football matches, standings, and team info across th
 
 | Team Details |
 |---|
-| ![](screenshots/team_details.png) | ![](screenshots/team_details(1).png) | ![] (screenshots/team_details(2).png) |
+| ![](screenshots/team_details.png) | ![](screenshots/team_details(1).png) | ![](screenshots/team_details(2).png) |
 
 ## Features
 
